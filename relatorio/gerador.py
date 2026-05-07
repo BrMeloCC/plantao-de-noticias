@@ -58,11 +58,16 @@ def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str =
 
     conn = db.get_conn(db_path)
     artigos_info: dict[str, dict] = {}
-    for p in pautas:
-        aid = p["artigo_principal_id"]
-        row = conn.execute("SELECT url, fonte_id FROM artigos WHERE id = ?", (aid,)).fetchone()
-        if row:
-            artigos_info[aid] = dict(row)
+    ids = [p["artigo_principal_id"] for p in pautas]
+    placeholders = ",".join("?" * len(ids))
+    rows = conn.execute(
+        f"SELECT a.id, a.url, COALESCE(f.nome, a.fonte_id) AS fonte_nome"
+        f" FROM artigos a LEFT JOIN fontes f ON a.fonte_id = f.id"
+        f" WHERE a.id IN ({placeholders})",
+        ids,
+    ).fetchall()
+    for row in rows:
+        artigos_info[row["id"]] = dict(row)
     conn.close()
 
     gerado_em = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
@@ -80,7 +85,7 @@ def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str =
         artigo = artigos_info.get(pauta["artigo_principal_id"], {})
         data_fato = (pauta.get("data_fato") or data_str)[:10]
         fonte_url = artigo.get("url", "#")
-        fonte_nome = artigo.get("fonte_id", "fonte desconhecida")
+        fonte_nome = artigo.get("fonte_nome", "fonte desconhecida")
         doc_url = pauta.get("documento_oficial_url")
 
         linhas += [

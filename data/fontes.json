@@ -289,6 +289,59 @@
     "ativo": true
   },
   {
+    "id": "pref-mage",
+    "nome": "Prefeitura de Magé",
+    "url_base": "https://mage.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://mage.rj.gov.br/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["mage"],
+    "ativo": true
+  },
+  {
+    "id": "pref-mesquita",
+    "nome": "Prefeitura de Mesquita",
+    "url_base": "https://prefeitura.mesquita.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://prefeitura.mesquita.rj.gov.br/noticias/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["mesquita"],
+    "ativo": true
+  },
+  {
+    "id": "nilopolis-pref-fazenda",
+    "nome": "Prefeitura de Nilópolis — Fazenda",
+    "url_base": "https://nilopolis.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://nilopolis.rj.gov.br/category/noticias/fazenda/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["nilopolis"],
+    "ativo": true,
+    "observacao": "Feed WordPress categoria Fazenda (IPTU, tributos, finanças municipais)"
+  },
+  {
+    "id": "nilopolis-pref-seguranca",
+    "nome": "Prefeitura de Nilópolis — Segurança Pública",
+    "url_base": "https://nilopolis.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://nilopolis.rj.gov.br/category/noticias/seguranca-publica/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["nilopolis"],
+    "ativo": true,
+    "observacao": "Feed WordPress categoria Segurança Pública"
+  },
+  {
+    "id": "camara-queimados",
+    "nome": "Câmara Municipal de Queimados",
+    "url_base": "https://www.queimados.rj.leg.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.queimados.rj.leg.br/institucional/noticias/agregador/RSS",
+    "tier": "A",
+    "municipios_cobertos": ["queimados"],
+    "ativo": true,
+    "observacao": "Feed RSS da Câmara inclui dispensas de licitação e atos oficiais"
+  },
+  {
     "id": "jornalatual",
     "nome": "Jornal Atual (Costa Verde / Zona Oeste)",
     "url_base": "https://jornalatual.com.br",

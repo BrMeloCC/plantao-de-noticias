@@ -19,7 +19,7 @@ from coletores import jornalatual as _coletor_jornalatual
 from coletores import mprj as _coletor_mprj
 from coletores import rss
 from coletores import tcerj as _coletor_tcerj
-from processamento import detector_municipio, scorer
+from processamento import detector_municipio, extrator_doc, scorer
 from relatorio import gerador
 
 _DATA_DIR = Path(__file__).parent / "data"
@@ -40,10 +40,12 @@ def _jaccard_bigramas(a: str, b: str) -> float:
 
 
 def _resumo(titulo: str, corpo: str) -> str:
+    for paragrafo in corpo.split("\n"):
+        p = paragrafo.strip()
+        if len(p) >= 40:
+            return p if len(p) <= 280 else p[:280].rsplit(" ", 1)[0] + "…"
     texto = corpo.strip() or titulo
-    if len(texto) <= 280:
-        return texto
-    return texto[:280].rsplit(" ", 1)[0] + "…"
+    return texto if len(texto) <= 280 else texto[:280].rsplit(" ", 1)[0] + "…"
 
 
 def _processar(artigo: dict, fonte: dict, municipios: dict, data_hoje: str):
@@ -68,6 +70,7 @@ def _processar(artigo: dict, fonte: dict, municipios: dict, data_hoje: str):
     titulo = artigo["titulo"]
     corpo = artigo.get("corpo_texto", "")
     tem_doc = scorer.tem_documento_oficial(titulo, corpo)
+    doc_url = extrator_doc.extrair_doc_url(artigo["url"], fonte["id"], titulo, corpo)
     tema = scorer.inferir_tema(titulo, corpo)
     boost = municipios.get(slug, {}).get("boost", 0)
     score_val, breakdown = scorer.calcular_score(
@@ -92,7 +95,7 @@ def _processar(artigo: dict, fonte: dict, municipios: dict, data_hoje: str):
         "resumo": _resumo(titulo, corpo),
         "artigo_principal_id": artigo["id"],
         "artigos_secundarios_ids": [],
-        "documento_oficial_url": None,
+        "documento_oficial_url": doc_url,
         "tier": fonte["tier"],
         "score": score_val,
         "score_breakdown": breakdown,
@@ -105,8 +108,8 @@ def _processar(artigo: dict, fonte: dict, municipios: dict, data_hoje: str):
     return artigo, pauta
 
 
-def _pauta_existente(pauta: dict, db_path=None) -> str | None:
-    recentes = db.buscar_pautas_recentes_por_municipio(pauta["municipio"], horas=48, db_path=db_path)
+def _pauta_existente(pauta: dict, db_path=None, conn=None) -> str | None:
+    recentes = db.buscar_pautas_recentes_por_municipio(pauta["municipio"], horas=48, db_path=db_path, conn=conn)
     for existente in recentes:
         if _jaccard_bigramas(pauta["titulo"], existente["titulo"]) >= _JACCARD_MIN:
             return existente["id"]
@@ -131,6 +134,7 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
     print(f"Fontes ativas: {len(fontes_ativas)}\n")
 
     novos_artigos = ignorados = novas_pautas = cruzamentos = 0
+    conn = db.get_conn(db_path)
 
     for fonte in fontes_ativas:
         print(f"  -> {fonte['nome']}...", end=" ", flush=True)
@@ -139,32 +143,34 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
                 artigos = rss.coletar(fonte, paginas=paginas)
             else:
                 artigos = _WEB_COLETORES[fonte["id"]].coletar(fonte, paginas=paginas)
-            db.marcar_fonte_coletada(fonte["id"], db_path)
+            db.marcar_fonte_coletada(fonte["id"], conn=conn)
             print(f"{len(artigos)} itens")
         except RuntimeError as e:
             print(f"ERRO — {e}")
-            db.marcar_fonte_falha(fonte["id"], db_path)
+            db.marcar_fonte_falha(fonte["id"], conn=conn)
             continue
 
         for artigo_raw in artigos:
-            if db.artigo_existe(artigo_raw["id"], db_path):
+            if db.artigo_existe(artigo_raw["id"], conn=conn):
                 continue
 
             artigo, pauta = _processar(artigo_raw, fonte, municipios, data_str)
-            db.salvar_artigo(artigo, db_path)
+            db.salvar_artigo(artigo, conn=conn)
             novos_artigos += 1
 
             if pauta is None:
                 ignorados += 1
                 continue
 
-            existente_id = _pauta_existente(pauta, db_path)
+            existente_id = _pauta_existente(pauta, conn=conn)
             if existente_id:
-                db.incrementar_cobertura(existente_id, artigo["id"], db_path)
+                db.incrementar_cobertura(existente_id, artigo["id"], conn=conn)
                 cruzamentos += 1
             else:
-                db.salvar_pauta(pauta, db_path)
+                db.salvar_pauta(pauta, conn=conn)
                 novas_pautas += 1
+
+    conn.close()
 
     print(f"\nResultado:")
     print(f"  Novos artigos coletados : {novos_artigos}")

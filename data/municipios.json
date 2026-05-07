@@ -25,21 +25,21 @@
   },
   "nilopolis": {
     "nome": "Nilópolis",
-    "boost": 1,
+    "boost": 2,
     "termos_exatos": ["nilópolis", "nilopolis"],
-    "termos_contextuais": []
+    "termos_contextuais": ["fundo de vale", "câmara de nilópolis"]
   },
   "mesquita": {
     "nome": "Mesquita",
-    "boost": 0,
+    "boost": 2,
     "termos_exatos": ["mesquita"],
-    "termos_contextuais": []
+    "termos_contextuais": ["câmara de mesquita", "prefeitura de mesquita"]
   },
   "queimados": {
     "nome": "Queimados",
-    "boost": 0,
+    "boost": 2,
     "termos_exatos": ["queimados"],
-    "termos_contextuais": []
+    "termos_contextuais": ["câmara de queimados", "prefeitura de queimados"]
   },
   "japeri": {
     "nome": "Japeri",
@@ -49,9 +49,9 @@
   },
   "mage": {
     "nome": "Magé",
-    "boost": 0,
+    "boost": 2,
     "termos_exatos": ["magé", "mage"],
-    "termos_contextuais": []
+    "termos_contextuais": ["câmara de magé", "prefeitura de magé", "piabetá", "santo aleixo"]
   },
   "guapimirim": {
     "nome": "Guapimirim",

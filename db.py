@@ -58,9 +58,16 @@ CREATE TABLE IF NOT EXISTS pautas (
 def get_conn(db_path=None) -> sqlite3.Connection:
     path = Path(db_path) if db_path else DB_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(path))
-    conn.row_factory = sqlite3.Row
-    return conn
+    c = sqlite3.connect(str(path))
+    c.row_factory = sqlite3.Row
+    return c
+
+
+def _use(conn, db_path):
+    """Returns (conn, owned). Caller must close conn only when owned=True."""
+    if conn is not None:
+        return conn, False
+    return get_conn(db_path), True
 
 
 def init_db(db_path=None):
@@ -105,17 +112,18 @@ def carregar_fontes(db_path=None) -> list[dict]:
     return [dict(r) for r in rows]
 
 
-def artigo_existe(artigo_id: str, db_path=None) -> bool:
-    conn = get_conn(db_path)
-    row = conn.execute("SELECT 1 FROM artigos WHERE id = ?", (artigo_id,)).fetchone()
-    conn.close()
+def artigo_existe(artigo_id: str, db_path=None, conn=None) -> bool:
+    c, owned = _use(conn, db_path)
+    row = c.execute("SELECT 1 FROM artigos WHERE id = ?", (artigo_id,)).fetchone()
+    if owned:
+        c.close()
     return row is not None
 
 
-def salvar_artigo(artigo: dict, db_path=None):
-    conn = get_conn(db_path)
-    with conn:
-        conn.execute(
+def salvar_artigo(artigo: dict, db_path=None, conn=None):
+    c, owned = _use(conn, db_path)
+    with c:
+        c.execute(
             """INSERT OR IGNORE INTO artigos
                (id, url, titulo, corpo_texto, data_publicacao, data_coleta,
                 fonte_id, municipio, confianca_municipio, status)
@@ -128,13 +136,14 @@ def salvar_artigo(artigo: dict, db_path=None):
                 artigo.get("status", "novo"),
             ),
         )
-    conn.close()
+    if owned:
+        c.close()
 
 
-def salvar_pauta(pauta: dict, db_path=None):
-    conn = get_conn(db_path)
-    with conn:
-        conn.execute(
+def salvar_pauta(pauta: dict, db_path=None, conn=None):
+    c, owned = _use(conn, db_path)
+    with c:
+        c.execute(
             """INSERT OR REPLACE INTO pautas
                (id, titulo, municipio, tema, resumo, artigo_principal_id,
                 artigos_secundarios_ids, documento_oficial_url, tier, score,
@@ -152,7 +161,8 @@ def salvar_pauta(pauta: dict, db_path=None):
                 pauta.get("data_fato"), pauta["data_geracao"],
             ),
         )
-    conn.close()
+    if owned:
+        c.close()
 
 
 def buscar_pautas_do_dia(data: str, data_fim: str = None, municipio: str = None, tema: str = None, top_n: int = 10, incluir_outros: bool = False, db_path=None) -> list[dict]:
@@ -175,29 +185,34 @@ def buscar_pautas_do_dia(data: str, data_fim: str = None, municipio: str = None,
     return [dict(r) for r in rows]
 
 
-def buscar_pautas_recentes_por_municipio(municipio: str, horas: int = 48, db_path=None) -> list[dict]:
-    conn = get_conn(db_path)
-    rows = conn.execute(
+def buscar_pautas_recentes_por_municipio(municipio: str, horas: int = 48, db_path=None, conn=None) -> list[dict]:
+    c, owned = _use(conn, db_path)
+    rows = c.execute(
         """SELECT id, titulo FROM pautas
            WHERE municipio = ? AND data_geracao >= datetime('now', ?)
            ORDER BY data_geracao DESC""",
         (municipio, f"-{horas} hours"),
     ).fetchall()
-    conn.close()
+    if owned:
+        c.close()
     return [dict(r) for r in rows]
 
 
-def incrementar_cobertura(pauta_id: str, artigo_id: str, db_path=None):
-    conn = get_conn(db_path)
-    with conn:
-        row = conn.execute(
+def incrementar_cobertura(pauta_id: str, artigo_id: str, db_path=None, conn=None):
+    c, owned = _use(conn, db_path)
+    with c:
+        row = c.execute(
             "SELECT artigos_secundarios_ids, cobertura_cruzada, score_breakdown, tier FROM pautas WHERE id = ?",
             (pauta_id,),
         ).fetchone()
         if not row:
+            if owned:
+                c.close()
             return
         secundarios = json.loads(row["artigos_secundarios_ids"])
         if artigo_id in secundarios:
+            if owned:
+                c.close()
             return
         secundarios.append(artigo_id)
         nova_cobertura = row["cobertura_cruzada"] + 1
@@ -212,36 +227,39 @@ def incrementar_cobertura(pauta_id: str, artigo_id: str, db_path=None):
         )
         breakdown["cobertura_bonus"] = novo_bonus
         breakdown["score_final"] = novo_score
-        conn.execute(
+        c.execute(
             """UPDATE pautas
                SET artigos_secundarios_ids = ?, cobertura_cruzada = ?, score = ?, score_breakdown = ?
                WHERE id = ?""",
             (json.dumps(secundarios), nova_cobertura, novo_score, json.dumps(breakdown), pauta_id),
         )
-    conn.close()
+    if owned:
+        c.close()
 
 
-def marcar_fonte_coletada(fonte_id: str, db_path=None):
-    conn = get_conn(db_path)
-    with conn:
-        conn.execute(
+def marcar_fonte_coletada(fonte_id: str, db_path=None, conn=None):
+    c, owned = _use(conn, db_path)
+    with c:
+        c.execute(
             "UPDATE fontes SET ultima_coleta = ?, falhas_consecutivas = 0 WHERE id = ?",
             (datetime.utcnow().isoformat(), fonte_id),
         )
-    conn.close()
+    if owned:
+        c.close()
 
 
-def marcar_fonte_falha(fonte_id: str, db_path=None):
-    conn = get_conn(db_path)
-    with conn:
-        conn.execute(
+def marcar_fonte_falha(fonte_id: str, db_path=None, conn=None):
+    c, owned = _use(conn, db_path)
+    with c:
+        c.execute(
             "UPDATE fontes SET falhas_consecutivas = falhas_consecutivas + 1 WHERE id = ?",
             (fonte_id,),
         )
-        row = conn.execute(
+        row = c.execute(
             "SELECT falhas_consecutivas FROM fontes WHERE id = ?", (fonte_id,)
         ).fetchone()
         if row and row["falhas_consecutivas"] >= 3:
-            conn.execute("UPDATE fontes SET ativo = 0 WHERE id = ?", (fonte_id,))
+            c.execute("UPDATE fontes SET ativo = 0 WHERE id = ?", (fonte_id,))
             print(f"  [ALERTA] Fonte '{fonte_id}' desativada após 3 falhas consecutivas.")
-    conn.close()
+    if owned:
+        c.close()
