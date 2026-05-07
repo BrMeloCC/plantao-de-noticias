@@ -79,9 +79,9 @@ def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str =
     for i, pauta in enumerate(pautas, 1):
         artigo = artigos_info.get(pauta["artigo_principal_id"], {})
         data_fato = (pauta.get("data_fato") or data_str)[:10]
-        documento = pauta.get("documento_oficial_url") or "_não encontrado_"
         fonte_url = artigo.get("url", "#")
         fonte_nome = artigo.get("fonte_id", "fonte desconhecida")
+        doc_url = pauta.get("documento_oficial_url")
 
         linhas += [
             f"## PAUTA #{i} — {_nome_municipio(pauta['municipio'])} — {data_fato}",
@@ -95,11 +95,10 @@ def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str =
             pauta.get("resumo") or "_sem resumo disponível_",
             "",
             f"**Fonte principal:** [{fonte_nome}]({fonte_url})  ",
-            f"**Documento oficial:** {documento}",
-            "",
-            "---",
-            "",
         ]
+        if doc_url:
+            linhas.append(f"**Documento oficial:** {doc_url}")
+        linhas += ["", "---", ""]
 
     return "\n".join(linhas)
 
