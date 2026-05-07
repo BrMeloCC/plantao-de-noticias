@@ -183,7 +183,7 @@
     "tier": "B",
     "municipios_cobertos": ["*"],
     "ativo": false,
-    "observacao": "URL do feed precisa ser verificada antes de ativar"
+    "observacao": "RSS descontinuado — site migrou para SPA, nenhum endpoint de feed retorna XML"
   },
   {
     "id": "cnn-brasil",
@@ -198,13 +198,13 @@
   {
     "id": "band-rj",
     "nome": "BandNews RJ",
-    "url_base": "https://bandnewstv.band.uol.com.br",
+    "url_base": "https://bandnewstv.uol.com.br",
     "tipo_acesso": "rss",
-    "url_feed": "https://bandnewstv.band.uol.com.br/feed/",
+    "url_feed": "https://bandnewstv.uol.com.br/feed/",
     "tier": "B",
     "municipios_cobertos": ["*"],
     "ativo": false,
-    "observacao": "URL do feed precisa ser verificada antes de ativar"
+    "observacao": "RSS descontinuado — site migrou para bandnewstv.uol.com.br (Next.js SPA), nenhum endpoint de feed retorna XML"
   },
   {
     "id": "oglobo",
@@ -276,6 +276,16 @@
     "url_feed": "https://informabaixada.com.br/feed/",
     "tier": "C",
     "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "noticiasdebelfordroxo",
+    "nome": "Notícias de Belford Roxo",
+    "url_base": "https://www.noticiasdebelfordroxo.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdebelfordroxo.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["belford-roxo"],
     "ativo": true
   },
   {
