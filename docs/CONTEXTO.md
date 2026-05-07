@@ -249,6 +249,8 @@ Sem parâmetros, executa o modo padrão: todas as fontes ativas, data atual, top
 
 ## Estado atual
 
+**Repositório:** https://github.com/BrMeloCC/plantao-de-noticias
+
 O pipeline está funcional para coleta RSS. O que está feito:
 
 - Coleta RSS de 18 fontes configuradas (10 ativas, 8 pendentes de verificação de URL)
