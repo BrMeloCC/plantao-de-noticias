@@ -23,6 +23,7 @@ _MUNICIPIO_NOME = {
     "itaguai": "Itaguaí",
     "paracambi": "Paracambi",
     "rio-de-janeiro": "Rio de Janeiro",
+    "estado-rio": "Estado do Rio",
 }
 
 
@@ -45,20 +46,60 @@ def _nome_tema(slug: str) -> str:
     return _TEMA_NOME.get(slug, slug.replace("-", " ").title())
 
 
+def _render_pautas(linhas: list, pautas: list, artigos_info: dict, data_str: str, prefixo: str = "PAUTA") -> None:
+    for i, pauta in enumerate(pautas, 1):
+        artigo = artigos_info.get(pauta["artigo_principal_id"], {})
+        data_fato = (pauta.get("data_fato") or data_str)[:10]
+        fonte_url = artigo.get("url", "#")
+        fonte_nome = artigo.get("fonte_nome", "fonte desconhecida")
+        doc_url = pauta.get("documento_oficial_url")
+
+        linhas += [
+            f"## {prefixo} #{i} — {_nome_municipio(pauta['municipio'])} — {data_fato}",
+            "",
+            f"**Tema:** {_nome_tema(pauta['tema'])}  ",
+            f"**Qualidade:** Tier {pauta['tier']} · Score {pauta['score']:.1f}  ",
+            f"**Risco jurídico:** {_RISCO_LABEL.get(pauta['risco_juridico'], pauta['risco_juridico'])}  ",
+            f"**Cobertura cruzada:** {pauta['cobertura_cruzada']} fonte(s)",
+            "",
+            "**Resumo:**  ",
+            pauta.get("resumo") or "_sem resumo disponível_",
+            "",
+            f"**Fonte principal:** [{fonte_nome}]({fonte_url})  ",
+        ]
+        if doc_url:
+            linhas.append(f"**Documento oficial:** {doc_url}")
+        linhas += ["", "---", ""]
+
+
 def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str = None, tema: str = None, incluir_outros: bool = False, db_path=None) -> str:
-    pautas = db.buscar_pautas_do_dia(data_str, data_fim=data_fim, municipio=municipio, tema=tema, top_n=top_n, incluir_outros=incluir_outros, db_path=db_path)
+    mostrar_estado = municipio is None
+
+    pautas = db.buscar_pautas_do_dia(
+        data_str, data_fim=data_fim, municipio=municipio,
+        municipio_excluir="estado-rio" if mostrar_estado else None,
+        tema=tema, top_n=top_n, incluir_outros=incluir_outros, db_path=db_path,
+    )
+
+    pautas_estado = []
+    if mostrar_estado:
+        pautas_estado = db.buscar_pautas_do_dia(
+            data_str, data_fim=data_fim, municipio="estado-rio",
+            top_n=5, incluir_outros=incluir_outros, db_path=db_path,
+        )
 
     periodo = f"{data_str} a {data_fim}" if data_fim and data_fim != data_str else data_str
 
-    if not pautas:
+    if not pautas and not pautas_estado:
         return (
             f"# Plantão de Notícias — {periodo}\n\n"
             "Nenhuma pauta encontrada para os filtros aplicados.\n"
         )
 
+    todas = pautas + pautas_estado
     conn = db.get_conn(db_path)
     artigos_info: dict[str, dict] = {}
-    ids = [p["artigo_principal_id"] for p in pautas]
+    ids = [p["artigo_principal_id"] for p in todas]
     placeholders = ",".join("?" * len(ids))
     rows = conn.execute(
         f"SELECT a.id, a.url, COALESCE(f.nome, a.fonte_id) AS fonte_nome"
@@ -81,29 +122,16 @@ def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str =
         "",
     ]
 
-    for i, pauta in enumerate(pautas, 1):
-        artigo = artigos_info.get(pauta["artigo_principal_id"], {})
-        data_fato = (pauta.get("data_fato") or data_str)[:10]
-        fonte_url = artigo.get("url", "#")
-        fonte_nome = artigo.get("fonte_nome", "fonte desconhecida")
-        doc_url = pauta.get("documento_oficial_url")
+    _render_pautas(linhas, pautas, artigos_info, data_str)
 
+    if pautas_estado:
         linhas += [
-            f"## PAUTA #{i} — {_nome_municipio(pauta['municipio'])} — {data_fato}",
+            "# Estado do Rio — Destaques",
             "",
-            f"**Tema:** {_nome_tema(pauta['tema'])}  ",
-            f"**Qualidade:** Tier {pauta['tier']} · Score {pauta['score']:.1f}  ",
-            f"**Risco jurídico:** {_RISCO_LABEL.get(pauta['risco_juridico'], pauta['risco_juridico'])}  ",
-            f"**Cobertura cruzada:** {pauta['cobertura_cruzada']} fonte(s)",
+            "---",
             "",
-            "**Resumo:**  ",
-            pauta.get("resumo") or "_sem resumo disponível_",
-            "",
-            f"**Fonte principal:** [{fonte_nome}]({fonte_url})  ",
         ]
-        if doc_url:
-            linhas.append(f"**Documento oficial:** {doc_url}")
-        linhas += ["", "---", ""]
+        _render_pautas(linhas, pautas_estado, artigos_info, data_str, prefixo="ESTADO")
 
     return "\n".join(linhas)
 

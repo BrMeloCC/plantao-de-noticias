@@ -104,31 +104,37 @@ Keywords de cada tema são editáveis sem tocar no código Python.
 
 ## Formato do relatório de pautas
 
-Cada entrada no relatório diário segue essa estrutura:
+O relatório diário tem duas seções. A primeira lista as pautas municipais (top N por score); a segunda lista até 5 destaques do governo estadual.
 
 ```
-PAUTA #[ID] — [MUNICÍPIO] — [DATA]
-═══════════════════════════════════════
+# Plantão de Notícias — Relatório Diário
+> Data: YYYY-MM-DD | Pautas: N | Gerado em: ...
 
-Tema:         [categoria]
-Qualidade:    [A / B / C] — [descrição do score]
-Risco jurídico: [Baixo / Médio / Alto]
+---
+
+## PAUTA #1 — [MUNICÍPIO] — [DATA]
+
+Tema: [categoria]
+Qualidade: Tier [A/B/C/D] · Score [N.N]
+Risco jurídico: [🔴 Alto / 🟡 Médio / 🟢 Baixo]
+Cobertura cruzada: N fonte(s)
 
 Resumo:
-[2-3 linhas descrevendo o fato central]
+[primeiros 280 caracteres do corpo do artigo]
 
-Por que publicar:
-[1 linha com o ângulo editorial]
+Fonte principal: [nome do veículo](url)
+Documento oficial: [url] (quando existir)
 
-Fonte principal:
-[nome do veículo/órgão] — [link]
+---
 
-Fontes secundárias:
-- [link 1]
-- [link 2]
+## PAUTA #2 — ...
 
-Documento oficial:
-[link para TCE/MPE/DOERJ ou "não encontrado"]
+---
+
+# Estado do Rio — Destaques
+
+## ESTADO #1 — Estado do Rio — [DATA]
+...
 ```
 
 ---
@@ -168,8 +174,7 @@ Google Trends mede interesse de busca em escala nacional/regional. Escândalos m
 
 ### Fontes secundárias (portais jornalísticos)
 
-11 feeds RSS confirmados + 4 fontes via scraping — ver [FONTES.md](FONTES.md) para lista completa com URLs e tiers. Municípios com cobertura fraca (Magé, Mesquita, Nilópolis, Queimados) dependem principalmente do Brava Baixada.
-- Preferência por portais com RSS
+~27 feeds RSS + 4 fontes via scraping — ver [FONTES.md](FONTES.md) para lista completa. Magé, Mesquita e Queimados receberam fontes dedicadas novas; Japeri, Guapimirim e Paracambi agora têm ao menos o RSS da prefeitura (Tier A). Nilópolis ainda depende do Brava Baixada.
 
 ---
 
@@ -255,24 +260,25 @@ Sem parâmetros, executa o modo padrão: todas as fontes ativas, data atual, top
 
 O pipeline está funcional para coleta RSS e scraping de fontes primárias. O que está feito:
 
-- Coleta RSS de 18 fontes configuradas
-- Scrapers web para MPRJ, TCE-RJ e ALERJ (`coletores/mprj.py`, `tcerj.py`, `alerj.py`)
-- Detecção de município em 4 camadas
+- Coleta RSS de ~31 fontes configuradas (13 municípios + Estado + fontes gerais)
+- Scrapers web para MPRJ, TCE-RJ, ALERJ e Jornal Atual
+- Detecção de município em 4 camadas com validação de conteúdo na Camada 1 (evita atribuição de notícias nacionais a fontes municipais)
+- `termos_contextuais` inclui nomes dos prefeitos eleitos em 2024 para todos os municípios, permitindo detectar notícias que mencionam o prefeito sem citar a cidade
 - Classificação de tema por keywords expandidas em JSON (11 temas, cobertura ~72% → ~30% em "outros")
 - Score com tier, cobertura cruzada, recência, boost de município e peso de tema
 - Deduplicação semântica por Jaccard de bigramas (janela de 48h)
-- Geração de relatório Markdown com filtros por data (`data_fato`), município, tema e profundidade
-- "Outros / Geral" excluído do relatório por padrão; ativável via `--incluir-outros`
+- **Filtro editorial** configurable em `data/exclusoes.json`: pautas com conteúdo fora do escopo (5 grupos de keywords) são marcadas como `irrelevante` e mantidas no banco — nunca aparecem no relatório
+- Geração de relatório Markdown com duas seções: pautas municipais (top N) + "Estado do Rio — Destaques" (top 5 pautas do governo estadual)
+- Filtros: por data (`data_fato`), município, tema e profundidade; "Outros / Geral" excluído por padrão; ativável via `--incluir-outros`
 - Interface interativa (`cli.py`) e atalhos PowerShell (`run.ps1`)
 
 ## Próximos passos
 
 **Coletores pendentes:**
-- Portais regionais via scraping: Notícias da Baixada, Jornal Baixada em Foco, Jornal Atual
+- Portais regionais via scraping: Notícias da Baixada, Jornal Baixada em Foco
 - API TCE-RJ (endpoints REST): obras paralisadas, contratos, licitações por município
 
 **Qualidade das pautas:**
-- Busca automática de documento oficial → preenchimento de `documento_oficial_url`
 - Melhorar resumo da pauta: hoje usa os primeiros 280 chars do corpo; ideal seria extração do parágrafo-lide
 
 **Revisão e automação:**
@@ -280,4 +286,5 @@ O pipeline está funcional para coleta RSS e scraping de fontes primárias. O qu
 - Automação via cron / GitHub Actions para coleta diária sem intervenção manual
 
 **Cobertura geográfica:**
+- Nilópolis — buscar portal independente (hoje depende apenas do Brava Baixada)
 - Expandir municípios além da Baixada + Rio (demais 78 municípios do estado)

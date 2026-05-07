@@ -1,6 +1,6 @@
 # Plantão de Notícias — Mapeamento de Fontes
 
-> Mapeado em: 2026-05-06
+> Mapeado em: 2026-05-07
 > Escopo: Baixada Fluminense + Rio de Janeiro (capital)
 > Status: Verificado via acesso direto aos sites
 
@@ -177,16 +177,16 @@ Fonte: IBGE Censo 2022. Determina quantas fontes cada município precisa e peso 
 | 2 | **Duque de Caxias** | 808.152 | 4 | 1 | Bem coberto |
 | 3 | **Nova Iguaçu** | 785.882 | 4 | 1 | Bem coberto |
 | 4 | **Belford Roxo** | ~480.000 | 2 | 2 | Aceitável |
-| 5 | **São João de Meriti** | 440.962 | 2 | 1 | Aceitável |
-| 6 | **Magé** | 228.127 | 1 | 0 | ⚠ Fraco — só Brava |
-| 7 | **Mesquita** | 167.128 | 1 | 1 | ⚠ Fraco |
-| 8 | **Nilópolis** | ~155.000 | 1 | 1 | ⚠ Fraco |
-| 9 | **Itaguaí** | ~120.000 | 0 | 1 | ⚠ Só Jornal Atual |
-| 10 | **Japeri** | 96.289 | 1 | 0 | Baixa prioridade |
-| 11 | **Seropédica** | 80.596 | 0 | 1 | ⚠ Só Jornal Atual |
-| 12 | **Guapimirim** | ~55.000 | 1 | 0 | Baixa prioridade |
-| 13 | **Queimados** | ~145.000 | 1 | 0 | ⚠ Fraco |
-| 14 | **Paracambi** | 41.375 | 0 | 0 | Baixíssima prioridade |
+| 5 | **São João de Meriti** | 440.962 | 3 | 1 | Aceitável |
+| 6 | **Magé** | 228.127 | 3 | 0 | Aceitável (Câmara + Portal + Brava) |
+| 7 | **Mesquita** | 167.128 | 2 | 1 | Aceitável |
+| 8 | **Nilópolis** | ~155.000 | 1 | 1 | ⚠ Fraco — buscar portal independente |
+| 9 | **Itaguaí** | ~120.000 | 2 | 1 | Aceitável |
+| 10 | **Japeri** | 96.289 | 2 | 0 | Aceitável |
+| 11 | **Seropédica** | 80.596 | 2 | 1 | Aceitável |
+| 12 | **Guapimirim** | ~55.000 | 3 | 0 | Aceitável |
+| 13 | **Queimados** | ~145.000 | 3 | 0 | Aceitável |
+| 14 | **Paracambi** | 41.375 | 1 | 0 | Aceitável (prefeitura) |
 
 ---
 
@@ -435,12 +435,24 @@ BAIXADA GERAL / TIER B-C
   Brava Baixada   →  https://bravabaixada.com.br/feed/
 
 POR MUNICÍPIO
+  Nova Iguaçu     →  https://www.zmnoticias.com.br/feed/
+  Nova Iguaçu (*) →  https://novaiguacu24h.com.br/feed/         [confirmar atividade]
   Duque de Caxias →  https://duquecaxiensetv.com/feed/
   Duque de Caxias →  https://www.noticiasdeduquedecaxias.com/feeds/posts/default
-  Nova Iguaçu     →  https://www.zmnoticias.com.br/feed/
   Belford Roxo    →  https://belfordroxo24h.com/feed/
   São João Meriti →  https://www.noticiasdesaojoaodemeriti.com/feeds/posts/default
-  Nova Iguaçu (*) →  https://novaiguacu24h.com.br/feed/         [confirmar atividade]
+  São João Meriti →  https://meriti.rj.gov.br/inicio/feed/       [Tier A — prefeitura]
+  Mesquita        →  https://www.noticiasdemesquita.com/feeds/posts/default
+  Queimados       →  https://queimados.rj.gov.br/feed/           [Tier A — prefeitura]
+  Queimados       →  https://www.noticiasdequeimados.com/feeds/posts/default
+  Magé            →  https://portal.camaramage.rj.gov.br/feed/   [Tier A — câmara]
+  Magé            →  https://conexaomage.com.br/feed/
+  Japeri          →  https://japeri.rj.gov.br/feed/              [Tier A — prefeitura]
+  Guapimirim      →  https://guapimirim.rj.gov.br/novosite/feed/ [Tier A — prefeitura]
+  Seropédica      →  https://www.seropedicaonline.com/feed/
+  Itaguaí         →  https://www.itaguai.rj.leg.br/institucional/noticias/agregador/RSS  [Tier A — câmara]
+  Itaguaí         →  https://www.noticiasdeitaguai.com/feeds/posts/default [atividade baixa]
+  Paracambi       →  https://paracambi.rj.gov.br/feed/           [Tier A — prefeitura]
 
 DESATIVADOS
   MPF/PR-RJ       →  URL retorna 404 — novo endpoint a confirmar
@@ -471,12 +483,8 @@ DOERJ                →  https://portal.ioerj.com.br  (ou JusBrasil)
 ### Gaps de cobertura — próximas ações
 
 ```
-MUNICÍPIO SEM FONTE DEDICADA:
-  Magé       — apenas Brava Baixada; buscar portal local ativo
-  Mesquita   — apenas Notícias da Baixada; buscar portal local
-  Nilópolis  — apenas Brava; buscar portal local
-  Queimados  — apenas Brava; buscar portal local
-  Paracambi  — nenhuma fonte identificada (baixa prioridade — 41k hab.)
+MUNICÍPIO AINDA FRACO:
+  Nilópolis  — apenas Brava Baixada; buscar portal local independente
 
 CAPITAL:
   Zona Norte e Zona Oeste — sem fonte dedicada identificada
@@ -486,8 +494,6 @@ FONTES PRIMÁRIAS A CONFIRMAR:
   TRE-RJ RSS (erro de conexão na verificação)
   TCM-RJ RSS
   Diário Oficial do Município do Rio de Janeiro RSS
-  Seropédica — confirmar URL do portal de transparência
-  Itaguaí    — confirmar URL do portal de transparência
 ```
 
 ---

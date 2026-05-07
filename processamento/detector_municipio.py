@@ -1,3 +1,4 @@
+import re
 import unicodedata
 
 _KEYWORDS_POLITICAS = frozenset([
@@ -12,6 +13,10 @@ _KEYWORDS_POLITICAS = frozenset([
 def _norm(texto: str) -> str:
     nfkd = unicodedata.normalize("NFKD", texto.lower())
     return "".join(c for c in nfkd if not unicodedata.combining(c))
+
+
+def _termo_exato(termo_n: str, texto_n: str) -> bool:
+    return bool(re.search(r"(?<![a-z0-9])" + re.escape(termo_n) + r"(?![a-z0-9])", texto_n))
 
 
 def _tem_contexto_politico(texto: str) -> bool:
@@ -30,9 +35,18 @@ def detectar(
     Retorna (slug_municipio, confianca) — confiança de 0.0 a 1.0.
     Abaixo de 0.50 é indeterminado e deve ser ignorado.
     """
-    # Camada 1 — fonte exclusiva de município
+    # Camada 1 — fonte exclusiva de município (valida se o artigo é realmente local)
     if municipios_cobertos != ["*"] and len(municipios_cobertos) == 1:
-        return municipios_cobertos[0], 1.0
+        slug = municipios_cobertos[0]
+        dados = municipios.get(slug, {})
+        texto_n = _norm(titulo + " " + corpo[:2000])
+        for termo in dados.get("termos_exatos", []) + dados.get("termos_contextuais", []):
+            if _termo_exato(_norm(termo), texto_n):
+                return slug, 1.0
+        curto_n = _norm(titulo + " " + corpo[:500])
+        if any(_termo_exato(k, curto_n) for k in _KEYWORDS_POLITICAS):
+            return slug, 0.80
+        return slug, 0.20
 
     titulo_n = _norm(titulo)
     corpo_n = _norm(corpo[:2000])
@@ -48,19 +62,19 @@ def detectar(
         conf = 0.0
 
         # Camada 2 — slug ou nome na URL
-        if slug_n in url_n or nome_n in url_n:
+        if _termo_exato(slug_n, url_n) or _termo_exato(nome_n, url_n):
             conf = max(conf, 0.95)
 
         # Camada 3 — termo exato no título
         for termo in dados.get("termos_exatos", []):
-            if _norm(termo) in titulo_n:
+            if _termo_exato(_norm(termo), titulo_n):
                 conf = max(conf, 0.85)
                 break
 
         # Camada 4a — termo exato no corpo com contexto político
         if conf < 0.70:
             for termo in dados.get("termos_exatos", []):
-                if _norm(termo) in corpo_n and ctx_corpo:
+                if _termo_exato(_norm(termo), corpo_n) and ctx_corpo:
                     conf = max(conf, 0.70)
                     break
 

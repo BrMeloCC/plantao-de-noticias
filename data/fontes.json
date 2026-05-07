@@ -299,6 +299,28 @@
     "ativo": true
   },
   {
+    "id": "camara-mage",
+    "nome": "Câmara Municipal de Magé",
+    "url_base": "https://portal.camaramage.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://portal.camaramage.rj.gov.br/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["mage"],
+    "ativo": true,
+    "observacao": "Feed WordPress — leis aprovadas e atos do Legislativo; publicação lenta (~mensal)"
+  },
+  {
+    "id": "conexaomage",
+    "nome": "Conexão Jornal Magé",
+    "url_base": "https://conexaomage.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://conexaomage.com.br/feed/",
+    "tier": "C",
+    "municipios_cobertos": ["mage"],
+    "ativo": true,
+    "observacao": "Portal local independente — cobertura mista (política, infraestrutura, cultura); publicação irregular"
+  },
+  {
     "id": "pref-mesquita",
     "nome": "Prefeitura de Mesquita",
     "url_base": "https://prefeitura.mesquita.rj.gov.br",
@@ -350,5 +372,119 @@
     "municipios_cobertos": ["itaguai", "seropedica"],
     "ativo": true,
     "observacao": "Coleta via WordPress REST API — categorias 31 (Itaguaí) e 32 (Seropédica)"
+  },
+  {
+    "id": "pref-japeri",
+    "nome": "Prefeitura de Japeri",
+    "url_base": "https://japeri.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://japeri.rj.gov.br/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["japeri"],
+    "ativo": true
+  },
+  {
+    "id": "pref-guapimirim",
+    "nome": "Prefeitura de Guapimirim",
+    "url_base": "https://guapimirim.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://guapimirim.rj.gov.br/novosite/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["guapimirim"],
+    "ativo": true,
+    "observacao": "Feed contém item de teste 'Teste de Loop' — ignorar na triagem"
+  },
+  {
+    "id": "pref-paracambi",
+    "nome": "Prefeitura de Paracambi",
+    "url_base": "https://paracambi.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://paracambi.rj.gov.br/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["paracambi"],
+    "ativo": true
+  },
+  {
+    "id": "pref-sjm",
+    "nome": "Prefeitura de São João de Meriti",
+    "url_base": "https://meriti.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://meriti.rj.gov.br/inicio/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["sao-joao-de-meriti"],
+    "ativo": true
+  },
+  {
+    "id": "pref-queimados",
+    "nome": "Prefeitura de Queimados",
+    "url_base": "https://queimados.rj.gov.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://queimados.rj.gov.br/feed/",
+    "tier": "A",
+    "municipios_cobertos": ["queimados"],
+    "ativo": true
+  },
+  {
+    "id": "camara-itaguai",
+    "nome": "Câmara Municipal de Itaguaí",
+    "url_base": "https://www.itaguai.rj.leg.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.itaguai.rj.leg.br/institucional/noticias/agregador/RSS",
+    "tier": "A",
+    "municipios_cobertos": ["itaguai"],
+    "ativo": true,
+    "observacao": "Feed inclui atos legislativos e dispensas de licitação"
+  },
+  {
+    "id": "seropedicaonline",
+    "nome": "Seropédica Online",
+    "url_base": "https://www.seropedicaonline.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.seropedicaonline.com/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["seropedica"],
+    "ativo": true
+  },
+  {
+    "id": "noticiasdemesquita",
+    "nome": "Notícias de Mesquita",
+    "url_base": "https://www.noticiasdemesquita.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdemesquita.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["mesquita"],
+    "ativo": true
+  },
+  {
+    "id": "noticiasdequeimados",
+    "nome": "Notícias de Queimados",
+    "url_base": "https://www.noticiasdequeimados.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdequeimados.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["queimados"],
+    "ativo": true
+  },
+  {
+    "id": "noticiasdeitaguai",
+    "nome": "Notícias de Itaguaí",
+    "url_base": "https://www.noticiasdeitaguai.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdeitaguai.com/feeds/posts/default",
+    "tier": "C",
+    "municipios_cobertos": ["itaguai"],
+    "ativo": true,
+    "observacao": "Blogger — último artigo novembro 2024, verificar atividade"
+  },
+  {
+    "id": "portalguapimirim",
+    "nome": "Portal Guapimirim",
+    "url_base": "https://portalguapimirim.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://portalguapimirim.com.br/feed/",
+    "tier": "C",
+    "municipios_cobertos": ["guapimirim"],
+    "ativo": true,
+    "observacao": "Foco em turismo e cidade — cobertura política limitada"
   }
 ]

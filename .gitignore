@@ -20,6 +20,14 @@ env/
 db/*.db
 db/*.db-shm
 db/*.db-wal
+*.db
+data/*.db
+
+# Logs
+logs/
+
+# Memória interna do agente
+.claude/
 
 # Relatórios gerados
 relatorios/*.md

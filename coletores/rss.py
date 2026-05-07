@@ -4,9 +4,25 @@ from datetime import datetime
 from urllib.parse import urlparse, urlencode, parse_qsl, urlunparse
 
 import feedparser
+import requests
 
 _HEADERS = {"User-Agent": "PlantaoDeNoticias/1.0 (monitoramento jornalistico municipal RJ)"}
 _TAG_RE = re.compile(r"<[^>]+>")
+_XML_ROOTS = ("</rss>", "</feed>", "</rdf:RDF>")
+
+
+def _fetch_limpo(url: str) -> str | None:
+    """Busca o feed via requests e trunca após o fechamento do elemento raiz XML."""
+    try:
+        r = requests.get(url, headers=_HEADERS, timeout=15)
+        text = r.text
+        for closing in _XML_ROOTS:
+            idx = text.rfind(closing)
+            if idx != -1:
+                return text[: idx + len(closing)]
+    except Exception:
+        pass
+    return None
 
 
 def _normalizar_url(url: str) -> str:
@@ -72,8 +88,13 @@ def coletar(fonte: dict, paginas: int = 1) -> list[dict]:
         feed = feedparser.parse(url, request_headers=_HEADERS)
         if feed.bozo and not feed.entries:
             if url == base_url:
-                raise RuntimeError(f"Feed inválido: {feed.bozo_exception}")
-            break
+                texto = _fetch_limpo(url)
+                if texto:
+                    feed = feedparser.parse(texto)
+                if not feed.entries:
+                    raise RuntimeError(f"Feed inválido: {feed.bozo_exception}")
+            else:
+                break
 
         novos = 0
         for entry in feed.entries:

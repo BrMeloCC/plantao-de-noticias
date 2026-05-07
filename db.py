@@ -165,14 +165,17 @@ def salvar_pauta(pauta: dict, db_path=None, conn=None):
         c.close()
 
 
-def buscar_pautas_do_dia(data: str, data_fim: str = None, municipio: str = None, tema: str = None, top_n: int = 10, incluir_outros: bool = False, db_path=None) -> list[dict]:
+def buscar_pautas_do_dia(data: str, data_fim: str = None, municipio: str = None, municipio_excluir: str = None, tema: str = None, top_n: int = 10, incluir_outros: bool = False, db_path=None) -> list[dict]:
     conn = get_conn(db_path)
     fim = data_fim or data
     params: list = [data, fim]
-    query = "SELECT * FROM pautas WHERE date(data_fato) BETWEEN ? AND ? AND status != 'rejeitado'"
+    query = "SELECT * FROM pautas WHERE date(data_fato) BETWEEN ? AND ? AND status NOT IN ('rejeitado', 'irrelevante')"
     if municipio:
         query += " AND municipio = ?"
         params.append(municipio)
+    if municipio_excluir:
+        query += " AND municipio != ?"
+        params.append(municipio_excluir)
     if tema:
         query += " AND tema = ?"
         params.append(tema)

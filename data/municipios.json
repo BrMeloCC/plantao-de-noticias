@@ -3,84 +3,90 @@
     "nome": "Nova Iguaçu",
     "boost": 2,
     "termos_exatos": ["nova iguaçu", "nova iguacu"],
-    "termos_contextuais": []
+    "termos_contextuais": ["dudu reina", "eduardo reina"]
   },
   "duque-de-caxias": {
     "nome": "Duque de Caxias",
     "boost": 2,
     "termos_exatos": ["duque de caxias"],
-    "termos_contextuais": ["caxias"]
+    "termos_contextuais": ["caxias", "netinho reis"]
   },
   "sao-joao-de-meriti": {
     "nome": "São João de Meriti",
     "boost": 1,
     "termos_exatos": ["são joão de meriti", "sao joao de meriti"],
-    "termos_contextuais": ["meriti", "sjm"]
+    "termos_contextuais": ["meriti", "sjm", "léo vieira"]
   },
   "belford-roxo": {
     "nome": "Belford Roxo",
     "boost": 2,
     "termos_exatos": ["belford roxo"],
-    "termos_contextuais": ["waguinho"]
+    "termos_contextuais": ["waguinho", "márcio canella"]
   },
   "nilopolis": {
     "nome": "Nilópolis",
     "boost": 2,
     "termos_exatos": ["nilópolis", "nilopolis"],
-    "termos_contextuais": ["fundo de vale", "câmara de nilópolis"]
+    "termos_contextuais": ["fundo de vale", "câmara de nilópolis", "abraãozinho", "abraão david"]
   },
   "mesquita": {
     "nome": "Mesquita",
     "boost": 2,
     "termos_exatos": ["mesquita"],
-    "termos_contextuais": ["câmara de mesquita", "prefeitura de mesquita"]
+    "termos_contextuais": ["câmara de mesquita", "prefeitura de mesquita", "alex marotto", "marotto"]
   },
   "queimados": {
     "nome": "Queimados",
     "boost": 2,
     "termos_exatos": ["queimados"],
-    "termos_contextuais": ["câmara de queimados", "prefeitura de queimados"]
+    "termos_contextuais": ["câmara de queimados", "prefeitura de queimados", "glauco kaizer"]
   },
   "japeri": {
     "nome": "Japeri",
     "boost": 0,
     "termos_exatos": ["japeri"],
-    "termos_contextuais": []
+    "termos_contextuais": ["fernanda ontiveros"]
   },
   "mage": {
     "nome": "Magé",
     "boost": 2,
     "termos_exatos": ["magé", "mage"],
-    "termos_contextuais": ["câmara de magé", "prefeitura de magé", "piabetá", "santo aleixo"]
+    "termos_contextuais": ["câmara de magé", "prefeitura de magé", "piabetá", "santo aleixo", "renato cozzolino"]
   },
   "guapimirim": {
     "nome": "Guapimirim",
     "boost": 0,
     "termos_exatos": ["guapimirim"],
-    "termos_contextuais": []
+    "termos_contextuais": ["marina rocha"]
   },
   "seropedica": {
     "nome": "Seropédica",
     "boost": 0,
     "termos_exatos": ["seropédica", "seropedica"],
-    "termos_contextuais": []
+    "termos_contextuais": ["professor lucas", "lucas dutra"]
   },
   "itaguai": {
     "nome": "Itaguaí",
     "boost": 0,
     "termos_exatos": ["itaguaí", "itaguai"],
-    "termos_contextuais": []
+    "termos_contextuais": ["rubém vieira", "rubem vieira", "dr rubão", "rubão"]
   },
   "paracambi": {
     "nome": "Paracambi",
     "boost": 0,
     "termos_exatos": ["paracambi"],
-    "termos_contextuais": []
+    "termos_contextuais": ["andrezinho ceciliano", "andré ceciliano"]
   },
   "rio-de-janeiro": {
     "nome": "Rio de Janeiro",
     "boost": 1,
     "termos_exatos": ["prefeitura do rio", "município do rio", "câmara municipal do rio"],
     "termos_contextuais": ["rio de janeiro", "carioca", "eduardo paes"]
+  },
+  "estado-rio": {
+    "nome": "Estado do Rio",
+    "boost": 1,
+    "termos_exatos": ["governo do estado", "governo estadual", "alerj", "assembleia legislativa do estado", "secretaria de estado", "governo fluminense", "estado do rio de janeiro"],
+    "termos_contextuais": ["governador", "claudio castro", "cláudio castro"]
   }
 }

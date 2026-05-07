@@ -151,8 +151,11 @@ pendente_ia        → gerada, aguardando revisão automatizada
 pendente_humano    → passou pela IA, aguardando roteirista
 aprovado           → roteirista aprovou — pronto para produção
 rejeitado          → descartado (IA ou humano)
+irrelevante        → filtrada automaticamente por conteúdo fora do escopo (ver data/exclusoes.json)
 publicado          → vídeo produzido e postado
 ```
+
+Pautas `irrelevante` permanecem no banco para auditoria mas nunca aparecem nos relatórios.
 
 **Critérios de `risco_juridico`:**
 
@@ -245,9 +248,17 @@ Pautas com `risco_juridico = alto` e `tier = D` são automaticamente marcadas co
 
 O coletor precisa identificar automaticamente qual município uma notícia cobre. A detecção é feita em camadas, da mais confiável à menos.
 
-### Camada 1 — Fonte exclusiva de município (confiança: 1,0)
+### Camada 1 — Fonte exclusiva de município (confiança: 0,20–1,0)
 
-Se `Fonte.municipios_cobertos` contém exatamente um município e não `["*"]`, atribuir diretamente.
+Se `Fonte.municipios_cobertos` contém exatamente um município e não `["*"]`, a fonte indica o município mas o conteúdo é validado:
+
+| Condição | Confiança |
+|---|---|
+| Artigo menciona explicitamente a cidade (`termos_exatos` ou `termos_contextuais`) | 1,0 |
+| Artigo contém keyword política local (prefeito, obra, desvio…) sem citar a cidade | 0,80 |
+| Nenhuma das condições acima (ex.: notícia nacional/internacional repostada) | 0,20 → ignorado |
+
+Isso impede que fontes municipais que repostem notícias nacionais (ex.: Trump, Epstein) sejam atribuídas incorretamente ao município da fonte.
 
 Exemplos: Duquecaxiense TV, Notícias de São João de Meriti, ZM Notícias (Nova Iguaçu).
 
@@ -310,9 +321,12 @@ Esta lista será mantida em `data/bairros.json` e cresce incrementalmente.
   "seropedica":         "Seropédica",
   "itaguai":            "Itaguaí",
   "paracambi":          "Paracambi",
-  "rio-de-janeiro":     "Rio de Janeiro"
+  "rio-de-janeiro":     "Rio de Janeiro",
+  "estado-rio":         "Estado do Rio"
 }
 ```
+
+`estado-rio` captura notícias do governo estadual (ALERJ, governador, secretarias de estado). No relatório diário, aparece em seção separada ("Estado do Rio — Destaques") após as pautas municipais.
 
 ---
 
@@ -350,18 +364,25 @@ plantao_de_noticias/
 ├── requirements.txt
 ├── run.ps1
 ├── data/
-│   ├── fontes.json              # instâncias do modelo Fonte
-│   ├── municipios.json          # slugs, nomes e boost por município
-│   └── temas.json               # temas, keywords e peso (editável)
+│   ├── fontes.json              # instâncias do modelo Fonte (~31 fontes ativas)
+│   ├── municipios.json          # slugs, nomes, boost e termos por município (inclui prefeitos)
+│   ├── temas.json               # temas, keywords e peso (editável)
+│   └── exclusoes.json           # grupos de palavras-chave para filtro editorial
 ├── db/
 │   └── plantao.db               # SQLite
 ├── coletores/
-│   └── rss.py                   # coletor genérico de RSS
+│   ├── rss.py                   # coletor genérico de RSS
+│   ├── mprj.py                  # scraper MPRJ
+│   ├── tcerj.py                 # scraper TCE-RJ
+│   ├── alerj.py                 # scraper ALERJ
+│   └── jornalatual.py           # scraper Jornal Atual
 ├── processamento/
 │   ├── detector_municipio.py    # detecção de município em 4 camadas
-│   └── scorer.py                # score, tema, risco jurídico
+│   ├── scorer.py                # score, tema, risco jurídico
+│   ├── filtro_exclusao.py       # filtro editorial por keywords (exclusoes.json)
+│   └── extrator_doc.py          # busca URL de documento oficial
 ├── relatorio/
-│   └── gerador.py               # monta o relatório Markdown
+│   └── gerador.py               # monta o relatório Markdown (seção municipal + Estado do Rio)
 ├── relatorios/                  # saída gerada
 └── docs/                        # documentação interna
 ```
@@ -370,7 +391,7 @@ plantao_de_noticias/
 
 ## O que ainda não foi implementado
 
-- Coletores scraping (MPRJ, Notícias da Baixada, Jornal Baixada em Foco)
+- Coletores scraping: Notícias da Baixada, Jornal Baixada em Foco (MPRJ, TCE-RJ, ALERJ, Jornal Atual já implementados)
 - Coletor da API TCE-RJ
 - Revisão por IA antes da revisão humana
-- Campo `documento_oficial_url` populado automaticamente (hoje é sempre `null`)
+- Automação via cron / GitHub Actions para coleta diária

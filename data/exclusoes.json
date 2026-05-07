@@ -1,0 +1,58 @@
+{
+  "cotas-genero": {
+    "nome": "Cotas / Identidade de Gênero",
+    "keywords": [
+      "cota trans", "cotas para trans", "cotas trans",
+      "identidade de gênero", "identidade de genero",
+      "banheiro neutro", "banheiro de gênero neutro",
+      "pronome neutro", "pronomes neutros",
+      "linguagem inclusiva", "linguagem neutra",
+      "transfobia estrutural", "transfeminismo",
+      "pessoas trans na política", "representatividade trans"
+    ]
+  },
+  "racismo-estrutural": {
+    "nome": "Racismo Estrutural / Letramento Racial",
+    "keywords": [
+      "racismo estrutural",
+      "letramento racial",
+      "privilégio branco", "privilegio branco",
+      "branquitude",
+      "decolonialismo", "decolonial",
+      "antirracismo", "antirracista",
+      "epistemicídio", "epistemicidio"
+    ]
+  },
+  "agenda-drogas": {
+    "nome": "Agenda Pró-Legalização de Drogas",
+    "keywords": [
+      "legalização da maconha", "legalizacao da maconha",
+      "descriminalização das drogas", "descriminalizacao das drogas",
+      "marcha da maconha",
+      "uso recreativo da maconha", "uso recreativo da cannabis",
+      "regulamentação da cannabis recreativa"
+    ]
+  },
+  "garantismo-criminal": {
+    "nome": "Garantismo / Abolicionismo Penal",
+    "keywords": [
+      "abolicionismo penal",
+      "encarceramento em massa",
+      "desmilitarização da polícia", "desmilitarizacao da policia",
+      "humanização dos presídios", "humanizacao dos presidios",
+      "defesa de bandidos",
+      "direitos dos criminosos"
+    ]
+  },
+  "pautas-ideologicas": {
+    "nome": "Pautas Ideológicas sem Valor Noticioso Local",
+    "keywords": [
+      "lei anti-misoginia", "lei anti misoginia", "anti-misoginia",
+      "cultura do estupro",
+      "patriarcado sistêmico",
+      "mansplaining",
+      "perspectiva de gênero",
+      "equidade de gênero", "equidade de genero"
+    ]
+  }
+}

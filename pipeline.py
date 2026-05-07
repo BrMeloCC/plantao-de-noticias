@@ -19,7 +19,7 @@ from coletores import jornalatual as _coletor_jornalatual
 from coletores import mprj as _coletor_mprj
 from coletores import rss
 from coletores import tcerj as _coletor_tcerj
-from processamento import detector_municipio, extrator_doc, scorer
+from processamento import detector_municipio, extrator_doc, filtro_exclusao, scorer
 from relatorio import gerador
 
 _DATA_DIR = Path(__file__).parent / "data"
@@ -87,6 +87,7 @@ def _processar(artigo: dict, fonte: dict, municipios: dict, data_hoje: str):
         artigo["status"] = "ignorado"
         return artigo, None
 
+    exclusao = filtro_exclusao.verificar(titulo, corpo)
     pauta = {
         "id": str(uuid.uuid4()),
         "titulo": titulo,
@@ -101,7 +102,7 @@ def _processar(artigo: dict, fonte: dict, municipios: dict, data_hoje: str):
         "score_breakdown": breakdown,
         "cobertura_cruzada": 1,
         "risco_juridico": risco,
-        "status": "pendente_humano",
+        "status": "irrelevante" if exclusao else "pendente_humano",
         "data_fato": (artigo.get("data_publicacao") or data_hoje)[:10],
         "data_geracao": f"{data_hoje}T{datetime.utcnow().strftime('%H:%M:%S')}",
     }
@@ -133,7 +134,7 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
     ]
     print(f"Fontes ativas: {len(fontes_ativas)}\n")
 
-    novos_artigos = ignorados = novas_pautas = cruzamentos = 0
+    novos_artigos = ignorados = novas_pautas = cruzamentos = irrelevantes = 0
     conn = db.get_conn(db_path)
 
     for fonte in fontes_ativas:
@@ -162,6 +163,11 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
                 ignorados += 1
                 continue
 
+            if pauta["status"] == "irrelevante":
+                db.salvar_pauta(pauta, conn=conn)
+                irrelevantes += 1
+                continue
+
             existente_id = _pauta_existente(pauta, conn=conn)
             if existente_id:
                 db.incrementar_cobertura(existente_id, artigo["id"], conn=conn)
@@ -175,6 +181,7 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
     print(f"\nResultado:")
     print(f"  Novos artigos coletados : {novos_artigos}")
     print(f"  Ignorados (sem município): {ignorados}")
+    print(f"  Filtradas (fora do escopo): {irrelevantes}")
     print(f"  Novas pautas geradas    : {novas_pautas}")
     print(f"  Coberturas cruzadas     : {cruzamentos}")
 
