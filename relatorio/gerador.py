@@ -45,8 +45,8 @@ def _nome_tema(slug: str) -> str:
     return _TEMA_NOME.get(slug, slug.replace("-", " ").title())
 
 
-def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str = None, tema: str = None, db_path=None) -> str:
-    pautas = db.buscar_pautas_do_dia(data_str, data_fim=data_fim, municipio=municipio, tema=tema, top_n=top_n, db_path=db_path)
+def gerar(data_str: str, data_fim: str = None, top_n: int = 10, municipio: str = None, tema: str = None, incluir_outros: bool = False, db_path=None) -> str:
+    pautas = db.buscar_pautas_do_dia(data_str, data_fim=data_fim, municipio=municipio, tema=tema, top_n=top_n, incluir_outros=incluir_outros, db_path=db_path)
 
     periodo = f"{data_str} a {data_fim}" if data_fim and data_fim != data_str else data_str
 

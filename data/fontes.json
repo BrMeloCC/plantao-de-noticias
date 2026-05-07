@@ -1,5 +1,15 @@
 [
   {
+    "id": "mprj",
+    "nome": "MPRJ — Notícias",
+    "url_base": "https://www.mprj.mp.br",
+    "tipo_acesso": "web",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Scraping da listagem de notícias (/busca?filtro_param=noticias)"
+  },
+  {
     "id": "mpf-rj",
     "nome": "MPF/PR-RJ",
     "url_base": "https://www.mpf.mp.br/rj",
@@ -183,8 +193,7 @@
     "url_feed": "https://www.cnnbrasil.com.br/feed",
     "tier": "B",
     "municipios_cobertos": ["*"],
-    "ativo": false,
-    "observacao": "URL do feed precisa ser verificada antes de ativar"
+    "ativo": true
   },
   {
     "id": "band-rj",
@@ -196,5 +205,47 @@
     "municipios_cobertos": ["*"],
     "ativo": false,
     "observacao": "URL do feed precisa ser verificada antes de ativar"
+  },
+  {
+    "id": "oglobo",
+    "nome": "O Globo",
+    "url_base": "https://oglobo.globo.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://oglobo.globo.com/rss.xml",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": false,
+    "observacao": "Feed retorna XML vazio — O Globo descontinuou RSS público"
+  },
+  {
+    "id": "poder360",
+    "nome": "Poder360",
+    "url_base": "https://www.poder360.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.poder360.com.br/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Portal de política nacional — útil para contexto federal"
+  },
+  {
+    "id": "tcerj",
+    "nome": "TCE-RJ",
+    "url_base": "https://www.tce.rj.gov.br",
+    "tipo_acesso": "web",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Tribunal de Contas do Estado — acórdãos, notícias e decisões"
+  },
+  {
+    "id": "alerj",
+    "nome": "ALERJ",
+    "url_base": "https://www.alerj.rj.gov.br",
+    "tipo_acesso": "web",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Assembleia Legislativa do RJ — comunicação e press releases"
   }
 ]

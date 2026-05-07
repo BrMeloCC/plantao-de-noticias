@@ -120,6 +120,8 @@ python pipeline.py --data 2026-05-07 --municipio belford-roxo --tema crime-organ
 | `--municipio` | Filtrar por município (slug) |
 | `--tema` | Filtrar por tema (slug) |
 | `--top` | Número máximo de pautas (padrão: 10) |
+| `--paginas` | Páginas por fonte (padrão: 1 — rápida; 10+ para backfill) |
+| `--incluir-outros` | Inclui pautas sem tema classificado no relatório |
 
 ---
 

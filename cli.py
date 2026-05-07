@@ -34,6 +34,7 @@ _TEMAS = [
     ("Segurança Pública",                       "seguranca-publica"),
     ("Eleições / Política Eleitoral",           "eleicoes"),
     ("Greve / Paralisação",                     "greve"),
+    ("Outros / Geral",                          "outros"),
 ]
 
 _MUNICIPIOS = [
@@ -60,6 +61,12 @@ _DATAS = {
     "Últimos 7 dias":          (str(date.today() - timedelta(days=6)), date.today().isoformat()),
     "Últimos 30 dias":         (str(date.today() - timedelta(days=29)), date.today().isoformat()),
     "Data personalizada":      None,
+}
+
+_PROFUNDIDADES = {
+    "Rápida — hoje (~10 itens/fonte)":          1,
+    "Padrão — últimos dias (~30 itens/fonte)":  3,
+    "Histórica — backfill (~100 itens/fonte)": 10,
 }
 
 
@@ -105,22 +112,30 @@ def _perguntar_data() -> tuple[str, str | None]:
     return data_ini, data_fim
 
 
+_MUNICIPIO_SLUG = {nome: slug for nome, slug in _MUNICIPIOS}
+_TEMA_SLUG = {nome: slug for nome, slug in _TEMAS}
+
+
 def _perguntar_municipio() -> str | None:
     escolha = questionary.select(
         "Município:",
-        choices=[questionary.Choice(nome, value=slug) for nome, slug in _MUNICIPIOS],
+        choices=list(_MUNICIPIO_SLUG.keys()),
         style=_ESTILO,
     ).ask()
-    return escolha
+    if escolha is None:
+        raise SystemExit
+    return _MUNICIPIO_SLUG[escolha]
 
 
 def _perguntar_tema() -> str | None:
     escolha = questionary.select(
         "Tema:",
-        choices=[questionary.Choice(nome, value=slug) for nome, slug in _TEMAS],
+        choices=list(_TEMA_SLUG.keys()),
         style=_ESTILO,
     ).ask()
-    return escolha
+    if escolha is None:
+        raise SystemExit
+    return _TEMA_SLUG[escolha]
 
 
 def _perguntar_top() -> int:
@@ -133,6 +148,17 @@ def _perguntar_top() -> int:
     return int(escolha)
 
 
+def _perguntar_profundidade() -> int:
+    escolha = questionary.select(
+        "Profundidade da coleta:",
+        choices=list(_PROFUNDIDADES.keys()),
+        style=_ESTILO,
+    ).ask()
+    if escolha is None:
+        raise SystemExit
+    return _PROFUNDIDADES[escolha]
+
+
 def main():
     print()
     print("  Plantão de Notícias")
@@ -143,13 +169,26 @@ def main():
     municipio = _perguntar_municipio()
     tema = _perguntar_tema()
     top_n = _perguntar_top()
+    paginas = _perguntar_profundidade()
+
+    incluir_outros = False
+    if tema is None:
+        incluir_outros = questionary.confirm(
+            "Incluir pautas sem tema definido (Outros / Geral)?",
+            default=False,
+            style=_ESTILO,
+        ).ask()
+        if incluir_outros is None:
+            raise SystemExit
 
     periodo = f"{data_ini} a {data_fim}" if data_fim else data_ini
     print()
-    print(f"  Período   : {periodo}")
-    print(f"  Município : {municipio or 'todos'}")
-    print(f"  Tema      : {tema or 'todos'}")
-    print(f"  Top N     : {top_n}")
+    print(f"  Período      : {periodo}")
+    print(f"  Município    : {municipio or 'todos'}")
+    print(f"  Tema         : {tema or 'todos'}")
+    print(f"  Outros       : {'sim' if incluir_outros else 'não'}")
+    print(f"  Top N        : {top_n}")
+    print(f"  Páginas/fonte: {paginas}")
     print()
 
     confirmar = questionary.confirm("Executar agora?", default=True, style=_ESTILO).ask()
@@ -164,6 +203,8 @@ def main():
         municipio=municipio,
         tema=tema,
         top_n=top_n,
+        paginas=paginas,
+        incluir_outros=incluir_outros,
     )
 
 

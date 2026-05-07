@@ -14,13 +14,21 @@ from datetime import date, datetime
 from pathlib import Path
 
 import db
+from coletores import alerj as _coletor_alerj
+from coletores import mprj as _coletor_mprj
 from coletores import rss
+from coletores import tcerj as _coletor_tcerj
 from processamento import detector_municipio, scorer
 from relatorio import gerador
 
 _DATA_DIR = Path(__file__).parent / "data"
 _CONFIANCA_MINIMA = 0.50
 _JACCARD_MIN = 0.55
+_WEB_COLETORES = {
+    "mprj": _coletor_mprj,
+    "tcerj": _coletor_tcerj,
+    "alerj": _coletor_alerj,
+}
 
 
 def _jaccard_bigramas(a: str, b: str) -> float:
@@ -103,7 +111,7 @@ def _pauta_existente(pauta: dict, db_path=None) -> str | None:
     return None
 
 
-def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = None, top_n: int = 10, db_path=None) -> Path:
+def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = None, top_n: int = 10, paginas: int = 1, incluir_outros: bool = False, db_path=None) -> Path:
     print(f"\n{'=' * 50}")
     print(f"  Plantão de Notícias — {data_str}")
     print(f"{'=' * 50}\n")
@@ -114,15 +122,21 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
     db.init_db(db_path)
     db.sincronizar_fontes(fontes_json, db_path)
 
-    fontes_ativas = [f for f in db.carregar_fontes(db_path) if f["tipo_acesso"] == "rss"]
-    print(f"Fontes RSS ativas: {len(fontes_ativas)}\n")
+    fontes_ativas = [
+        f for f in db.carregar_fontes(db_path)
+        if f["tipo_acesso"] == "rss" or (f["tipo_acesso"] == "web" and f["id"] in _WEB_COLETORES)
+    ]
+    print(f"Fontes ativas: {len(fontes_ativas)}\n")
 
     novos_artigos = ignorados = novas_pautas = cruzamentos = 0
 
     for fonte in fontes_ativas:
         print(f"  -> {fonte['nome']}...", end=" ", flush=True)
         try:
-            artigos = rss.coletar(fonte)
+            if fonte["tipo_acesso"] == "rss":
+                artigos = rss.coletar(fonte, paginas=paginas)
+            else:
+                artigos = _WEB_COLETORES[fonte["id"]].coletar(fonte, paginas=paginas)
             db.marcar_fonte_coletada(fonte["id"], db_path)
             print(f"{len(artigos)} itens")
         except RuntimeError as e:
@@ -156,7 +170,7 @@ def run(data_str: str, data_fim: str = None, municipio: str = None, tema: str = 
     print(f"  Novas pautas geradas    : {novas_pautas}")
     print(f"  Coberturas cruzadas     : {cruzamentos}")
 
-    conteudo = gerador.gerar(data_str, data_fim=data_fim, top_n=top_n, municipio=municipio, tema=tema, db_path=db_path)
+    conteudo = gerador.gerar(data_str, data_fim=data_fim, top_n=top_n, municipio=municipio, tema=tema, incluir_outros=incluir_outros, db_path=db_path)
     caminho = gerador.salvar(conteudo, data_str, data_fim=data_fim, municipio=municipio, tema=tema)
     print(f"\nRelatório salvo em: {caminho}\n")
     return caminho
@@ -169,7 +183,10 @@ if __name__ == "__main__":
     parser.add_argument("--municipio", default=None, help="Filtrar por município (slug, ex: belford-roxo)")
     parser.add_argument("--tema", default=None, help="Filtrar por tema (slug, ex: crime-organizado)")
     parser.add_argument("--top", type=int, default=10, help="Top N pautas no relatório (padrão: 10)")
+    parser.add_argument("--paginas", type=int, default=1, help="Páginas por fonte (padrão: 1 = coleta rápida; use 10+ para backfill histórico)")
+    parser.add_argument("--incluir-outros", action="store_true", dest="incluir_outros",
+        help="Incluir pautas com tema 'outros' no relatório (excluídas por padrão)")
     parser.add_argument("--db", default=None, help="Caminho para o arquivo SQLite")
     args = parser.parse_args()
 
-    run(data_str=args.data, data_fim=args.data_fim, municipio=args.municipio, tema=args.tema, top_n=args.top, db_path=args.db)
+    run(data_str=args.data, data_fim=args.data_fim, municipio=args.municipio, tema=args.tema, top_n=args.top, paginas=args.paginas, incluir_outros=args.incluir_outros, db_path=args.db)

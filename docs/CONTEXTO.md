@@ -194,8 +194,10 @@ python pipeline.py [--data YYYY-MM-DD] [--data-fim YYYY-MM-DD]
 | `--municipio` | Filtrar por município (slug) |
 | `--tema` | Filtrar por tema (slug) |
 | `--top` | Número máximo de pautas (padrão: 10) |
+| `--paginas` | Páginas por fonte (padrão: 1 — rápida; 10+ para backfill histórico) |
+| `--incluir-outros` | Inclui pautas sem tema classificado no relatório (excluídas por padrão) |
 
-Sem parâmetros, executa o modo padrão: todas as fontes ativas, data atual, top 10 pautas.
+Sem parâmetros, executa o modo padrão: todas as fontes ativas, data atual, top 10 pautas, sem "outros".
 
 ---
 
@@ -251,20 +253,31 @@ Sem parâmetros, executa o modo padrão: todas as fontes ativas, data atual, top
 
 **Repositório:** https://github.com/BrMeloCC/plantao-de-noticias
 
-O pipeline está funcional para coleta RSS. O que está feito:
+O pipeline está funcional para coleta RSS e scraping de fontes primárias. O que está feito:
 
-- Coleta RSS de 18 fontes configuradas (10 ativas, 8 pendentes de verificação de URL)
+- Coleta RSS de 18 fontes configuradas
+- Scrapers web para MPRJ, TCE-RJ e ALERJ (`coletores/mprj.py`, `tcerj.py`, `alerj.py`)
 - Detecção de município em 4 camadas
-- Classificação de tema por keywords configuráveis em JSON
+- Classificação de tema por keywords expandidas em JSON (11 temas, cobertura ~72% → ~30% em "outros")
 - Score com tier, cobertura cruzada, recência, boost de município e peso de tema
 - Deduplicação semântica por Jaccard de bigramas (janela de 48h)
-- Geração de relatório Markdown com filtros por data, município e tema
+- Geração de relatório Markdown com filtros por data (`data_fato`), município, tema e profundidade
+- "Outros / Geral" excluído do relatório por padrão; ativável via `--incluir-outros`
 - Interface interativa (`cli.py`) e atalhos PowerShell (`run.ps1`)
 
-## O que ainda não foi implementado
+## Próximos passos
 
-- Coletores scraping (MPRJ, Notícias da Baixada, Jornal Baixada em Foco, Jornal Atual)
-- Coletor da API TCE-RJ (endpoints: obras paralisadas, contratos, licitações)
-- Busca automática de documento oficial e preenchimento do campo `documento_oficial_url`
-- Revisão por IA antes da revisão humana
-- Automação via cron / GitHub Actions
+**Coletores pendentes:**
+- Portais regionais via scraping: Notícias da Baixada, Jornal Baixada em Foco, Jornal Atual
+- API TCE-RJ (endpoints REST): obras paralisadas, contratos, licitações por município
+
+**Qualidade das pautas:**
+- Busca automática de documento oficial → preenchimento de `documento_oficial_url`
+- Melhorar resumo da pauta: hoje usa os primeiros 280 chars do corpo; ideal seria extração do parágrafo-lide
+
+**Revisão e automação:**
+- Revisão por IA (checagem de claims, sugestão de ângulo editorial) antes da revisão humana
+- Automação via cron / GitHub Actions para coleta diária sem intervenção manual
+
+**Cobertura geográfica:**
+- Expandir municípios além da Baixada + Rio (demais 78 municípios do estado)

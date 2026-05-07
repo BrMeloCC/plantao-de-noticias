@@ -41,30 +41,60 @@ def _parse_data(entry) -> str | None:
     return None
 
 
-def coletar(fonte: dict) -> list[dict]:
-    """Coleta todos os itens de uma fonte RSS. Lança RuntimeError em caso de falha."""
-    feed = feedparser.parse(fonte["url_feed"], request_headers=_HEADERS)
+_BLOGGER_TAG = "feeds/posts/default"
+_BLOGGER_MAX = 25
 
-    if feed.bozo and not feed.entries:
-        raise RuntimeError(f"Feed inválido: {feed.bozo_exception}")
+
+def _urls_paginadas(base_url: str, paginas: int) -> list[str]:
+    if paginas <= 1:
+        return [base_url]
+    if _BLOGGER_TAG in base_url:
+        # Blogger: ?start-index=26&max-results=25
+        sep = "&" if "?" in base_url else "?"
+        return [base_url] + [
+            f"{base_url}{sep}start-index={1 + p * _BLOGGER_MAX}&max-results={_BLOGGER_MAX}"
+            for p in range(1, paginas)
+        ]
+    # WordPress e compatíveis: ?paged=N
+    sep = "&" if "?" in base_url else "?"
+    return [base_url] + [f"{base_url.rstrip('/')}{sep}paged={p}" for p in range(2, paginas + 1)]
+
+
+def coletar(fonte: dict, paginas: int = 1) -> list[dict]:
+    base_url = fonte["url_feed"]
+    urls = _urls_paginadas(base_url, paginas)
 
     agora = datetime.utcnow().isoformat()
-    artigos = []
+    artigos: list[dict] = []
+    vistos: set[str] = set()
 
-    for entry in feed.entries:
-        url = entry.get("link", "").strip()
-        if not url:
-            continue
-        artigos.append(
-            {
-                "id": artigo_id(url),
-                "url": url,
+    for url in urls:
+        feed = feedparser.parse(url, request_headers=_HEADERS)
+        if feed.bozo and not feed.entries:
+            if url == base_url:
+                raise RuntimeError(f"Feed inválido: {feed.bozo_exception}")
+            break
+
+        novos = 0
+        for entry in feed.entries:
+            link = entry.get("link", "").strip()
+            if not link:
+                continue
+            aid = artigo_id(link)
+            if aid in vistos:
+                continue
+            vistos.add(aid)
+            novos += 1
+            artigos.append({
+                "id": aid,
+                "url": link,
                 "titulo": entry.get("title", "").strip(),
                 "corpo_texto": _extrair_texto(entry),
                 "data_publicacao": _parse_data(entry),
                 "data_coleta": agora,
                 "fonte_id": fonte["id"],
-            }
-        )
+            })
+        if novos == 0:
+            break
 
     return artigos

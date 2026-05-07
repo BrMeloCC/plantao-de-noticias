@@ -46,6 +46,8 @@ Abre menus de seleção para período, município, tema e número de pautas. Rec
 | `--municipio` | todos | Filtrar por município (slug) |
 | `--tema` | todos | Filtrar por tema (slug) |
 | `--top` | 10 | Número máximo de pautas no relatório |
+| `--paginas` | 1 | Páginas por fonte (1 = rápida; 10+ = backfill histórico) |
+| `--incluir-outros` | não | Inclui pautas sem tema definido no relatório |
 | `--db` | `db/plantao.db` | Caminho alternativo para o banco SQLite |
 
 ---
@@ -73,6 +75,12 @@ python pipeline.py --municipio rio-de-janeiro --tema improbidade-administrativa
 
 # Banco separado para teste (não afeta o banco principal)
 python pipeline.py --db testes/teste.db
+
+# Backfill histórico (coleta ~100 itens por fonte)
+python pipeline.py --data 2026-04-01 --data-fim 2026-05-07 --paginas 10
+
+# Incluir pautas sem tema classificado
+python pipeline.py --incluir-outros
 ```
 
 ---
@@ -139,7 +147,10 @@ plantao_de_noticias/
 │   └── temas.json               # Temas + keywords + peso (editável sem tocar no código)
 │
 ├── coletores/
-│   └── rss.py                   # Coleta e parse de feeds RSS
+│   ├── rss.py                   # Coleta e parse de feeds RSS
+│   ├── mprj.py                  # Scraper MPRJ (busca de notícias)
+│   ├── tcerj.py                 # Scraper TCE-RJ (todas as notícias)
+│   └── alerj.py                 # Scraper ALERJ (API de notícias)
 │
 ├── processamento/
 │   ├── detector_municipio.py    # Detecção de município por camadas

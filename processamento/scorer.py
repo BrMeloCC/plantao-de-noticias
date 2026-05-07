@@ -20,7 +20,7 @@ _DOCS_OFICIAIS = frozenset([
     "sentença", "sentenca", "resolução", "resolucao", "portaria",
 ])
 
-_TEMA_PADRAO = "improbidade-administrativa"
+_TEMA_PADRAO = "outros"
 
 
 def _load_temas() -> dict:
