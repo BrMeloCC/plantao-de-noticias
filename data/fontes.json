@@ -247,5 +247,35 @@
     "municipios_cobertos": ["*"],
     "ativo": true,
     "observacao": "Assembleia Legislativa do RJ — comunicação e press releases"
+  },
+  {
+    "id": "noticiasdabaixada",
+    "nome": "Notícias da Baixada",
+    "url_base": "https://www.noticiasdabaixada.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdabaixada.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "jornalbaixadaemfoco",
+    "nome": "Jornal Baixada em Foco",
+    "url_base": "https://jornalbaixadaemfoco.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://jornalbaixadaemfoco.com.br/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "informabaixada",
+    "nome": "Informa Baixada",
+    "url_base": "https://informabaixada.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://informabaixada.com.br/feed/",
+    "tier": "C",
+    "municipios_cobertos": ["*"],
+    "ativo": true
   }
 ]
