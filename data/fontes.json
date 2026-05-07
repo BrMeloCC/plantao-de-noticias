@@ -277,5 +277,15 @@
     "tier": "C",
     "municipios_cobertos": ["*"],
     "ativo": true
+  },
+  {
+    "id": "jornalatual",
+    "nome": "Jornal Atual (Costa Verde / Zona Oeste)",
+    "url_base": "https://jornalatual.com.br",
+    "tipo_acesso": "web",
+    "tier": "B",
+    "municipios_cobertos": ["itaguai", "seropedica"],
+    "ativo": true,
+    "observacao": "Coleta via WordPress REST API — categorias 31 (Itaguaí) e 32 (Seropédica)"
   }
 ]

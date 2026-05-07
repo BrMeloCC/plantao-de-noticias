@@ -15,6 +15,7 @@ from pathlib import Path
 
 import db
 from coletores import alerj as _coletor_alerj
+from coletores import jornalatual as _coletor_jornalatual
 from coletores import mprj as _coletor_mprj
 from coletores import rss
 from coletores import tcerj as _coletor_tcerj
@@ -28,6 +29,7 @@ _WEB_COLETORES = {
     "mprj": _coletor_mprj,
     "tcerj": _coletor_tcerj,
     "alerj": _coletor_alerj,
+    "jornalatual": _coletor_jornalatual,
 }
 
 
