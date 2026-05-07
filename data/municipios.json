@@ -1,0 +1,86 @@
+{
+  "nova-iguacu": {
+    "nome": "Nova Iguaçu",
+    "boost": 2,
+    "termos_exatos": ["nova iguaçu", "nova iguacu"],
+    "termos_contextuais": []
+  },
+  "duque-de-caxias": {
+    "nome": "Duque de Caxias",
+    "boost": 2,
+    "termos_exatos": ["duque de caxias"],
+    "termos_contextuais": ["caxias"]
+  },
+  "sao-joao-de-meriti": {
+    "nome": "São João de Meriti",
+    "boost": 1,
+    "termos_exatos": ["são joão de meriti", "sao joao de meriti"],
+    "termos_contextuais": ["meriti", "sjm"]
+  },
+  "belford-roxo": {
+    "nome": "Belford Roxo",
+    "boost": 2,
+    "termos_exatos": ["belford roxo"],
+    "termos_contextuais": ["waguinho"]
+  },
+  "nilopolis": {
+    "nome": "Nilópolis",
+    "boost": 1,
+    "termos_exatos": ["nilópolis", "nilopolis"],
+    "termos_contextuais": []
+  },
+  "mesquita": {
+    "nome": "Mesquita",
+    "boost": 0,
+    "termos_exatos": ["mesquita"],
+    "termos_contextuais": []
+  },
+  "queimados": {
+    "nome": "Queimados",
+    "boost": 0,
+    "termos_exatos": ["queimados"],
+    "termos_contextuais": []
+  },
+  "japeri": {
+    "nome": "Japeri",
+    "boost": 0,
+    "termos_exatos": ["japeri"],
+    "termos_contextuais": []
+  },
+  "mage": {
+    "nome": "Magé",
+    "boost": 0,
+    "termos_exatos": ["magé", "mage"],
+    "termos_contextuais": []
+  },
+  "guapimirim": {
+    "nome": "Guapimirim",
+    "boost": 0,
+    "termos_exatos": ["guapimirim"],
+    "termos_contextuais": []
+  },
+  "seropedica": {
+    "nome": "Seropédica",
+    "boost": 0,
+    "termos_exatos": ["seropédica", "seropedica"],
+    "termos_contextuais": []
+  },
+  "itaguai": {
+    "nome": "Itaguaí",
+    "boost": 0,
+    "termos_exatos": ["itaguaí", "itaguai"],
+    "termos_contextuais": []
+  },
+  "paracambi": {
+    "nome": "Paracambi",
+    "boost": 0,
+    "termos_exatos": ["paracambi"],
+    "termos_contextuais": []
+  },
+  "rio-de-janeiro": {
+    "nome": "Rio de Janeiro",
+    "boost": 1,
+    "termos_exatos": ["prefeitura do rio", "município do rio", "câmara municipal do rio"],
+    "termos_contextuais": ["rio de janeiro", "carioca", "eduardo paes"]
+  }
+}

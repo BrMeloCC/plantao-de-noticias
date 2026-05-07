@@ -1,0 +1,212 @@
+{
+  "crime-organizado": {
+    "nome": "Crime Organizado / Milícia",
+    "keywords": [
+      "milícia", "milicia", "facção", "faccao", "facções", "faccoes",
+      "tráfico", "trafico", "traficante", "narcotráfico", "narcotrafico",
+      "crime organizado", "gangue", "quadrilha armada",
+      "extorsão", "extorsao", "boca de fumo",
+      "comando vermelho", "amigos dos amigos", "terceiro comando", "bonde do mal",
+      "barricada", "barricadas",
+      "fuzil", "fuzilamento", "pistola apreendida", "arma apreendida",
+      "tiro ", "tiros ", "tiroteio", "confronto armado",
+      "tribunal do crime", "julgamento do tráfico",
+      "tortura", "sequestro", "cativeiro",
+      "execução", "execucao", "assassinato a mando",
+      "roubo de carga", "roubo de ônibus", "assalto a banco",
+      "favela dominada", "comunidade dominada", "território dominado",
+      "cobrança do tráfico", "taxa do tráfico", "domínio criminal",
+      "operação antidroga", "drogas apreendidas",
+      "armas apreendidas", "preso por tráfico"
+    ],
+    "peso": 1.2
+  },
+  "compra-de-voto": {
+    "nome": "Compra de Voto",
+    "keywords": [
+      "compra de voto", "compra de votos",
+      "caixa dois", "caixa 2", "caixa 2 eleitoral",
+      "financiamento ilegal", "financiamento irregular",
+      "propaganda eleitoral irregular", "propaganda irregular",
+      "captação ilícita", "captacao ilicita",
+      "distribuição de dinheiro eleitoral", "dinheiro para votar",
+      "pago para votar", "cabo eleitoral preso",
+      "coação eleitoral", "fraude eleitoral",
+      "boca de urna", "mesário suspeito",
+      "urna fraudada", "voto comprado",
+      "política do crachá", "benefício eleitoral"
+    ],
+    "peso": 1.1
+  },
+  "improbidade-administrativa": {
+    "nome": "Improbidade Administrativa",
+    "keywords": [
+      "improbidade", "ação penal", "acao penal",
+      "inquérito", "inquerito", "condenação", "condenacao",
+      "tce-rj", "mprj", "mpe-rj", "réu", "reu",
+      "desvio de verbas", "malversação", "malversacao",
+      "peculato", "corrupção passiva", "corrupção ativa",
+      "corrupcao passiva", "corrupcao ativa",
+      "lavagem de dinheiro", "enriquecimento ilícito", "enriquecimento ilicito",
+      "superfaturou", "desviou verba",
+      "prestação de contas reprovada", "contas rejeitadas",
+      "vereador preso", "prefeito investigado", "prefeito preso",
+      "secretário preso", "secretario preso",
+      "servidor investigado", "servidor preso",
+      "operação da polícia federal", "operacao da policia federal",
+      "mandado de prisão", "mandado de busca e apreensão"
+    ],
+    "peso": 1.0
+  },
+  "licitacao-suspeita": {
+    "nome": "Licitação Suspeita",
+    "keywords": [
+      "licitação suspeita", "licitacao suspeita",
+      "dispensa irregular", "dispensa de licitação",
+      "empresa fantasma", "empresa de fachada", "empresa laranja",
+      "superfaturamento", "sobrepreço", "sobrepreco",
+      "contrato suspeito", "contrato emergencial suspeito",
+      "fraude em licitação", "fraude em licitacao",
+      "direcionamento de licitação", "pregão suspeito",
+      "concorrência fraudada", "carta convite suspeita",
+      "nota fiscal fria", "nota fiscal fraudada",
+      "locação suspeita", "aluguel superfaturado",
+      "contrato sem licitação", "dispensa indevida"
+    ],
+    "peso": 1.1
+  },
+  "obras-inacabadas": {
+    "nome": "Obras Inacabadas / Superfaturadas",
+    "keywords": [
+      "obra inacabada", "obra paralisada", "obra abandonada",
+      "obra superfaturada", "obra atrasada", "obra parada",
+      "construção parada", "construcao parada",
+      "creche inacabada", "creche parada", "creche abandonada",
+      "upa inacabada", "hospital inacabado", "posto de saúde inacabado",
+      "escola sem reforma", "escola em ruínas", "teto caindo",
+      "viaduto interditado", "ponte interditada", "ponte abandonada",
+      "praça abandonada", "praça sem manutenção",
+      "rua sem asfalto", "asfalto esburacado", "buraco na rua",
+      "bueiro entupido", "alagamento por falta de drenagem",
+      "iluminação pública apagada", "saneamento básico parado",
+      "esgoto a céu aberto"
+    ],
+    "peso": 1.0
+  },
+  "gasto-irregular": {
+    "nome": "Gasto Irregular com Dinheiro Público",
+    "keywords": [
+      "show milionário", "show milionario",
+      "show suspeito", "evento suspeito",
+      "show com verba pública", "show com dinheiro público",
+      "contrato de show", "cachê milionário", "cache milionario",
+      "festa com verba", "festa com dinheiro público",
+      "carnaval superfaturado",
+      "diária excessiva", "diaria excessiva",
+      "diária de hotel", "passagem aérea cara",
+      "viagem ao exterior com verba pública",
+      "cartão corporativo", "cartão da prefeitura",
+      "carro oficial usado indevidamente", "combustível desviado",
+      "locação de veículo superfaturada",
+      "gasto com publicidade suspeito",
+      "uso indevido de verba",
+      "contrato de publicidade superfaturado",
+      "artista pago com verba pública"
+    ],
+    "peso": 1.0
+  },
+  "saude-publica": {
+    "nome": "Saúde Pública",
+    "keywords": [
+      "upa fechada", "upa sem médico", "upa lotada",
+      "hospital fechado", "emergência fechada",
+      "hospital sem insumo", "hospital sem médico",
+      "falta de medicamento", "medicamento em falta", "remédio em falta",
+      "remédio desviado", "remedio desviado",
+      "desvio na saúde", "desvio na saude",
+      "contrato hospitalar suspeito",
+      "fila do sus", "fila de espera no sus",
+      "leito fechado", "leito sem funcionamento",
+      "ambulância parada", "ambulância sem combustível",
+      "posto de saúde fechado", "posto sem médico",
+      "dengue", "leptospirose", "surto de dengue", "epidemia",
+      "vacina em falta", "imunização suspensa",
+      "crise na saúde", "crise na saude",
+      "falta de médico", "falta de medico"
+    ],
+    "peso": 1.0
+  },
+  "educacao": {
+    "nome": "Educação",
+    "keywords": [
+      "merenda desviada", "merenda suspeita", "fraude na merenda",
+      "material escolar superfaturado", "contrato de merenda suspeito",
+      "fraude na educação", "fraude na educacao",
+      "desvio na educação", "desvio na educacao",
+      "escola sem professor", "escola sem aula",
+      "escola fechada", "escola em ruínas",
+      "creche sem vaga", "creche fechada",
+      "aluno sem cadeira", "sala de aula destruída",
+      "escola sem energia", "escola sem água",
+      "infiltração na escola", "teto da escola caindo",
+      "professor sem salário", "professor sem pagamento",
+      "verba da educação desviada", "verba da educacao desviada",
+      "greve de professores"
+    ],
+    "peso": 1.0
+  },
+  "seguranca-publica": {
+    "nome": "Segurança Pública",
+    "keywords": [
+      "bala perdida", "bala perdida mata",
+      "chacina", "massacre",
+      "confronto policial", "operação policial", "operacao policial",
+      "morte por polícia", "morte por policia",
+      "auto de resistência", "auto de resistencia",
+      "policial morto", "policial assassinado", "policial baleado",
+      "PM baleado", "PM assassinado",
+      "agente de segurança morto",
+      "homicídio doloso", "homicidio doloso",
+      "latrocínio", "latrocinio",
+      "assalto à mão armada", "assalto a mao armada",
+      "sequestro relâmpago",
+      "crise na PM", "crise na segurança pública",
+      "índice de criminalidade", "taxa de homicídios",
+      "preso em flagrante", "preso suspeito de homicídio",
+      "delegacia superlotada", "presídio superlotado"
+    ],
+    "peso": 0.9
+  },
+  "eleicoes": {
+    "nome": "Eleições / Política Eleitoral",
+    "keywords": [
+      "candidatura", "pré-candidato", "pre-candidato",
+      "candidato a prefeito", "candidato a vereador",
+      "coligação", "coligacao", "federação partidária",
+      "pesquisa eleitoral", "pesquisa de intenção de voto",
+      "campanha eleitoral", "disputa eleitoral",
+      "debate eleitoral", "programa eleitoral",
+      "tre-rj", "urna eletrônica",
+      "pleito eleitoral", "eleição municipal",
+      "promessa eleitoral não cumprida",
+      "calendário eleitoral",
+      "caixa 2 eleitoral", "captação ilícita de recursos"
+    ],
+    "peso": 0.9
+  },
+  "greve": {
+    "nome": "Greve / Paralisação de Serviços Públicos",
+    "keywords": [
+      "greve", "paralisação", "paralisacao",
+      "servidores em greve", "servidores paralisados",
+      "greve de médicos", "greve de medicos",
+      "greve do funcionalismo",
+      "categoria em greve", "paralisação dos servidores",
+      "salário atrasado de servidor", "servidor sem salário",
+      "funcionalismo sem pagamento",
+      "protesto de servidores", "manifestação de servidores",
+      "ponto facultativo", "serviço público parado"
+    ],
+    "peso": 0.9
+  }
+}

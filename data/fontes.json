@@ -1,0 +1,200 @@
+[
+  {
+    "id": "mpf-rj",
+    "nome": "MPF/PR-RJ",
+    "url_base": "https://www.mpf.mp.br/rj",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.mpf.mp.br/rj/sala-de-imprensa/noticias-rj/RSS",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": false,
+    "observacao": "URL retorna 404 — verificar novo endpoint no site do MPF"
+  },
+  {
+    "id": "temporealrj",
+    "nome": "Tempo Real RJ",
+    "url_base": "https://temporealrj.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://temporealrj.com/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "jornaldestaquebaixada",
+    "nome": "Jornal Destaque Baixada",
+    "url_base": "https://www.jornaldestaquebaixada.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.jornaldestaquebaixada.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "folhadabaixada",
+    "nome": "Folha da Baixada",
+    "url_base": "https://folhadabaixada.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://folhadabaixada.com.br/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "bravabaixada",
+    "nome": "Brava Baixada",
+    "url_base": "https://bravabaixada.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://bravabaixada.com.br/feed/",
+    "tier": "C",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "duquecaxiensetv",
+    "nome": "Duquecaxiense TV",
+    "url_base": "https://duquecaxiensetv.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://duquecaxiensetv.com/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["duque-de-caxias"],
+    "ativo": true
+  },
+  {
+    "id": "noticiasdeduquedecaxias",
+    "nome": "Notícias de Duque de Caxias",
+    "url_base": "https://www.noticiasdeduquedecaxias.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdeduquedecaxias.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["duque-de-caxias"],
+    "ativo": true
+  },
+  {
+    "id": "zmnoticias",
+    "nome": "ZM Notícias",
+    "url_base": "https://www.zmnoticias.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.zmnoticias.com.br/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["nova-iguacu"],
+    "ativo": true
+  },
+  {
+    "id": "belfordroxo24h",
+    "nome": "Belford Roxo 24h",
+    "url_base": "https://belfordroxo24h.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://belfordroxo24h.com/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["belford-roxo"],
+    "ativo": true
+  },
+  {
+    "id": "noticiasdesaojoaodemeriti",
+    "nome": "Notícias de São João de Meriti",
+    "url_base": "https://www.noticiasdesaojoaodemeriti.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.noticiasdesaojoaodemeriti.com/feeds/posts/default",
+    "tier": "B",
+    "municipios_cobertos": ["sao-joao-de-meriti"],
+    "ativo": true
+  },
+  {
+    "id": "novaiguacu24h",
+    "nome": "Nova Iguaçu 24h",
+    "url_base": "https://novaiguacu24h.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://novaiguacu24h.com.br/feed/",
+    "tier": "C",
+    "municipios_cobertos": ["nova-iguacu"],
+    "ativo": true,
+    "observacao": "Verificar atividade — último item março 2026"
+  },
+  {
+    "id": "g1-rio",
+    "nome": "G1 Rio de Janeiro",
+    "url_base": "https://g1.globo.com/rio-de-janeiro/",
+    "tipo_acesso": "rss",
+    "url_feed": "https://g1.globo.com/rss/g1/rio-de-janeiro/",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "extra-globo",
+    "nome": "Extra",
+    "url_base": "https://extra.globo.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://extra.globo.com/rss.xml",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Tabloide do Grupo Globo com foco no Rio — verificar se RSS ainda está ativo"
+  },
+  {
+    "id": "o-dia",
+    "nome": "O Dia",
+    "url_base": "https://odia.ig.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://odia.ig.com.br/rss.xml",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Jornal do Grupo iG com foco no Rio — verificar URL do feed"
+  },
+  {
+    "id": "agencia-brasil",
+    "nome": "Agência Brasil (EBC)",
+    "url_base": "https://agenciabrasil.ebc.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml",
+    "tier": "A",
+    "municipios_cobertos": ["*"],
+    "ativo": true,
+    "observacao": "Agência oficial do governo federal — forte em atos oficiais e improbidade"
+  },
+  {
+    "id": "metropoles",
+    "nome": "Metrópoles",
+    "url_base": "https://www.metropoles.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.metropoles.com/feed",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": true
+  },
+  {
+    "id": "r7-noticias",
+    "nome": "R7 Notícias",
+    "url_base": "https://noticias.r7.com",
+    "tipo_acesso": "rss",
+    "url_feed": "https://noticias.r7.com/feed",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": false,
+    "observacao": "URL do feed precisa ser verificada antes de ativar"
+  },
+  {
+    "id": "cnn-brasil",
+    "nome": "CNN Brasil",
+    "url_base": "https://www.cnnbrasil.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://www.cnnbrasil.com.br/feed",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": false,
+    "observacao": "URL do feed precisa ser verificada antes de ativar"
+  },
+  {
+    "id": "band-rj",
+    "nome": "BandNews RJ",
+    "url_base": "https://bandnewstv.band.uol.com.br",
+    "tipo_acesso": "rss",
+    "url_feed": "https://bandnewstv.band.uol.com.br/feed/",
+    "tier": "B",
+    "municipios_cobertos": ["*"],
+    "ativo": false,
+    "observacao": "URL do feed precisa ser verificada antes de ativar"
+  }
+]
